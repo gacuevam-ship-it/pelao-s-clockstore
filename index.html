@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATLAS · Relojería Masculina</title>
+    <style>
+        /* ========== RESET & FONTS ========== */
+        @import url('[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap)');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 300;
+            color: #e0e0e0;
+            background: #0d0d0d;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            font-weight: 500;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: padding 0.3s;
+        }
+        .navbar.scrolled { padding: 0.8rem 2.5rem; }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.8rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #b0b0b0;
+            font-size: 0.82rem;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transition: color 0.25s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #d4af37;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover { color: #d4af37; }
+        .nav-links a:hover::after { width: 100%; }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: #d4af37;
+            transition: 0.3s;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 40%, rgba(212, 175, 55, 0.07) 0%, transparent 65%),
+                        linear-gradient(180deg, #0a0a0a 0%, #0d0d0d 40%, #111 100%);
+        }
+        .hero-content { max-width: 780px; z-index: 2; }
+        .hero-overline {
+            font-size: 0.75rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            line-height: 1.08;
+            letter-spacing: 0.03em;
+            color: #f5f0e8;
+            margin-bottom: 1.4rem;
+        }
+        .hero h1 em { font-style: italic; color: #d4af37; }
+        .hero p {
+            font-size: 1.05rem;
+            color: #999;
+            max-width: 440px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.75;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.85rem 2.6rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            background: transparent;
+            transition: all 0.35s;
+            cursor: pointer;
+        }
+        .btn:hover { background: #d4af37; color: #0d0d0d; }
+        .btn-filled { background: #d4af37; color: #0d0d0d; border-color: #d4af37; }
+        .btn-filled:hover { background: #c5a028; border-color: #c5a028; }
+
+        /* ========== SECTION SHARED ========== */
+        section { padding: 5.5rem 2rem; }
+        .section-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            color: #f5f0e8;
+            margin-bottom: 0.75rem;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #777;
+            max-width: 500px;
+            margin: 0 auto 3.5rem;
+            font-size: 0.95rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* ========== COLLECTION GRID ========== */
+        .collection { background: #0f0f0f; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.2rem;
+        }
+        .card {
+            background: #141414;
+            border: 1px solid #1e1e1e;
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .card-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+            background: #1a1a1a;
+            transition: filter 0.5s;
+        }
+        .card:hover .card-img { filter: brightness(1.1); }
+        .card-body { padding: 1.5rem; }
+        .card-body h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: #f5f0e8;
+            margin-bottom: 0.3rem;
+        }
+        .card-body .ref {
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            color: #d4af37;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .card-body .desc {
+            font-size: 0.82rem;
+            color: #888;
+            line-height: 1.6;
+        }
+        .card-body .price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            color: #d4af37;
+            margin-top: 0.8rem;
+        }
+
+        /* ========== HERITAGE ========== */
+        .heritage { background: #0d0d0d; }
+        .heritage-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .heritage-img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            background: #1a1a1a;
+            border: 1px solid #1e1e1e;
+        }
+        .heritage-text h2 { font-size: 2.2rem; color: #f5f0e8; margin-bottom: 1.2rem; }
+        .heritage-text p { color: #999; margin-bottom: 1.1rem; line-height: 1.8; }
+        .heritage-text .accent { color: #d4af37; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; }
+
+        /* ========== FEATURES ========== */
+        .features { background: #0f0f0f; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+        .features-grid h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            color: #f5f0e8;
+            margin-bottom: 0.5rem;
+        }
+        .features-grid p { font-size: 0.85rem; color: #888; }
+
+        /* ========== CONTACT / CTA ========== */
+        .cta {
+            background: radial-gradient(ellipse at 50% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 60%), #0d0d0d;
+            text-align: center;
+        }
+        .cta h2 { font-size: 2.4rem; color: #f5f0e8; margin-bottom: 1rem; }
+        .cta p { color: #888; max-width: 480px; margin: 0 auto 2.2rem; }
+        .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #080808;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+        }
+        footer .flogo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.25em;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+        footer p { font-size: 0.75rem; color: #555; }
+        footer .socials {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 1.2rem 0;
+            list-style: none;
+        }
+        footer .socials a { color: #777; text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; transition: color 0.25s; }
+        footer .socials a:hover { color: #d4af37; }
+
+        /* ========== MOBILE NAV OVERLAY ========== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(8, 8, 8, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .mobile-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #d4af37;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .navbar { padding: 1rem 1.5rem; }
+            .heritage-inner { grid-template-columns: 1fr; gap: 2rem; }
+            .heritage-img { aspect-ratio: 16/9; }
+            .hero h1 { font-size: clamp(2rem, 8vw, 3.5rem); }
+            section { padding: 4rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .cta h2 { font-size: 1.8rem; }
+            .btn { padding: 0.75rem 1.8rem; font-size: 0.72rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">ATLAS</a>
+        <ul class="nav-links">
+            <li><a href="#coleccion">Colección</a></li>
+            <li><a href="#herencia">Herencia</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Menú">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">&times;</button>
+        <a href="#coleccion">Colección</a>
+        <a href="#herencia">Herencia</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-overline">Desde 1952 · Ginebra</p>
+            <h1>El tiempo <em>se mide</em> en detalles</h1>
+            <p>Relojería suiza de alta precisión para el hombre que entiende que un reloj no marca la hora: la define.</p>
+            <a href="#coleccion" class="btn btn-filled">Descubrir colección</a>
+        </div>
+    </section>
+
+    <!-- COLLECTION -->
+    <section class="collection" id="coleccion">
+        <div class="container">
+            <p class="section-tag">Colección 2026</p>
+            <h2 class="section-title">Ediciones selectas</h2>
+            <p class="section-subtitle">Cada pieza es el resultado de meses de trabajo artesanal. Producción limitada, numeración individual.</p>
+            <div class="grid">
+                <div class="card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='400' height='533'%3E%3Crect fill='%231a1a1a' width='400' height='533'/%3E%3Ccircle cx='200' cy='220' r='100' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='200' cy='220' r='80' fill='none' stroke='%23444' stroke-width='0.5'/%3E%3Cline x1='200' y1='120' x2='200' y2='140' stroke='%23d4af37' stroke-width='2'/%3E%3Cline x1='200' y1='300' x2='200' y2='320' stroke='%23d4af37' stroke-width='2'/%3E%3Cline x1='100' y1='220' x2='120' y2='220' stroke='%23d4af37' stroke-width='2'/%3E%3Ctext x='200' y='370' text-anchor='middle' fill='%23d4af37' font-family='serif' font-size='14'%3EATLAS%3C/text%3E%3C/svg%3E"
+                         alt="Atlas Cronógrafo" class="card-img" />
+                    <div class="card-body">
+                        <p class="ref">Ref. A-1042</p>
+                        <h3>Cronógrafo Atlas</h3>
+                        <p class="desc">Movimiento automático suizo, caja de 42 mm en acero 904L, cristal de zafiro abovedado.</p>
+                        <p class="price">S/ 12,800</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='400' height='533'%3E%3Crect fill='%23181818' width='400' height='533'/%3E%3Crect x='140' y='160' width='120' height='150' rx='60' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='200' cy='230' r='45' fill='none' stroke='%23444' stroke-width='0.5'/%3E%3Cline x1='200' y1='160' x2='200' y2='180' stroke='%23d4af37' stroke-width='2.5'/%3E%3Cline x1='200' y1='280' x2='200' y2='300' stroke='%23d4af37' stroke-width='2'/%3E%3Ctext x='200' y='370' text-anchor='middle' fill='%23d4af37' font-family='serif' font-size='14'%3EATLAS%3C/text%3E%3C/svg%3E"
+                         alt="Atlas Dress" class="card-img" />
+                    <div class="card-body">
+                        <p class="ref">Ref. A-2087</p>
+                        <h3>Dress Ultra-Thin</h3>
+                        <p class="desc">Solo 5.8 mm de grosor. Esfera en nácar negro, correa de aligátor cosida a mano.</p>
+                        <p class="price">S/ 9,450</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='400' height='533'%3E%3Crect fill='%23161616' width='400' height='533'/%3E%3Ccircle cx='200' cy='220' r='90' fill='none' stroke='%232a2a2a' stroke-width='1'/%3E%3Ccircle cx='200' cy='220' r='70' fill='none' stroke='%23333' stroke-width='0.5'/%3E%3Cline x1='200' y1='130' x2='200' y2='155' stroke='%23d4af37' stroke-width='3'/%3E%3Cline x1='200' y1='285' x2='200' y2='310' stroke='%23d4af37' stroke-width='2'/%3E%3Cline x1='110' y1='220' x2='135' y2='220' stroke='%23d4af37' stroke-width='1.5'/%3E%3Ctext x='200' y='370' text-anchor='middle' fill='%23d4af37' font-family='serif' font-size='14'%3EATLAS%3C/text%3E%3C/svg%3E"
+                         alt="Atlas Diver" class="card-img" />
+                    <div class="card-body">
+                        <p class="ref">Ref. A-3091</p>
+                        <h3>Submersible 300M</h3>
+                        <p class="desc">Resistencia a 30 ATM, bisel cerámico unidireccional, válvula de helio automática.</p>
+                        <p class="price">S/ 15,200</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERITAGE -->
+    <section class="heritage" id="herencia">
+        <div class="container">
+            <div class="heritage-inner">
+                <img src="data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='600' height='750'%3E%3Crect fill='%23141414' width='600' height='750'/%3E%3Ccircle cx='300' cy='340' r='160' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='300' cy='340' r='130' fill='none' stroke='%23444' stroke-width='0.5'/%3E%3Cline x1='300' y1='180' x2='300' y2='220' stroke='%23d4af37' stroke-width='3'/%3E%3Cline x1='300' y1='460' x2='300' y2='500' stroke='%23d4af37' stroke-width='3'/%3E%3Cline x1='140' y1='340' x2='180' y2='340' stroke='%23d4af37' stroke-width='2'/%3E%3Ctext x='300' y='580' text-anchor='middle' fill='%23d4af37' font-family='serif' font-size='20'%3EATLAS·1952%3C/text%3E%3C/svg%3E"
+                     alt="Taller Atlas" class="heritage-img" />
+                <div class="heritage-text">
+                    <p class="section-tag" style="text-align:left;">Nuestra historia</p>
+                    <h2>Tres generaciones, una sola obsesión</h2>
+                    <p>Fundada en 1952 por el maestro relojero <span class="accent">Henri Delacroix</span> en el barrio de Carouge, Ginebra, Atlas nació de la convicción de que un reloj mecánico es la máxima expresión del ingenio humano.</p>
+                    <p>Hoy, bajo la dirección de su nieto, mantenemos intacto el compromiso original: producir menos de 400 relojes al año. Cada uno ensamblado, regulado y verificado por un solo maestro relojero, cuyo nombre queda registrado en el libro de fabrication.</p>
+                    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#d4af37;">— Precisión sin prisa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="servicios">
+        <div class="container">
+            <p class="section-tag">Servicios</p>
+            <h2 class="section-title">Más allá de la compra</h2>
+            <p class="section-subtitle">Una relación que empieza con un reloj y continúa durante generaciones.</p>
+            <div class="features-grid">
+                <div>
+                    <div class="feature-icon">&#9703;</div>
+                    <h3>Grabado personalizado</h3>
+                    <p>Iniciales, fechas o mensajes en el fondo de caja, realizados a mano por nuestro grabador.</p>
+                </div>
+                <div>
+                    <div class="feature-icon">&#9763;</div>
+                    <h3>Garantía de 5 años</h3>
+                    <p>Cobertura internacional en más de 40 países. Revisiones gratuitas cada dos años.</p>
+                </div>
+                <div>
+                    <div class="feature-icon">&#8986;</div>
+                    <h3>Mantenimiento vitalicio</h3>
+                    <p>Servicio técnico en nuestros talleres de Ginebra. Disponemos de repuestos para todos nuestros calibres históricos.</p>
+                </div>
+                <div>
+                    <div class="feature-icon">&#9737;</div>
+                    <h3>Asesoría privada</h3>
+                    <p>Citas individuales en nuestro salón. Prueba de modelos, medición de muñeca y selección guiada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contacto">
+        <div class="container">
+            <h2>Reserve una cita privada</h2>
+            <p>Visítenos en nuestro salón en San Isidro, Lima, o solicite una videollamada con uno de nuestros maestros relojeros.</p>
+            <div class="cta-btns">
+                <a href="#" class="btn btn-filled">Agendar visita</a>
+                <a href="#" class="btn">Catálogo digital</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="flogo">ATLAS</div>
+        <ul class="socials">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">WhatsApp</a></li>
+            <li><a href="#">Email</a></li>
+        </ul>
+        <p>Av. Camino Real 390, San Isidro, Lima · Lunes a sábado, 10:00 – 19:00</p>
+        <p style="margin-top:0.6rem;">&copy; 2026 Atlas Horlogerie. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        /* Navbar shrink on scroll */
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        /* Mobile menu toggle */
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+
+        hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+        mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+        /* Smooth reveal on scroll */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.card, .heritage-inner, .features-grid > div').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
